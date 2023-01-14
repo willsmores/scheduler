@@ -22,3 +22,22 @@ export function getAppointmentsForDay(state, day) {
   
   return queryResult;
 }
+
+
+export function getInterview(state, interview) {
+  
+  if (interview === null) {
+    return interview;
+  };
+  
+  const interviewTransformed = {};
+  
+  for (let interviewer in state.interviewers) {
+    if (parseInt(interviewer) === interview.interviewer) {
+      interviewTransformed['student'] = interview.student;
+      interviewTransformed['interviewer'] = state.interviewers[interviewer];
+    }
+  }
+  
+  return interviewTransformed;
+};
