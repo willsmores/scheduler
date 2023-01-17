@@ -44,6 +44,22 @@ export function getInterviewersForDay(state, day) {
   }
 
   return queryResult;
+
+  // const foundDay = state.days.find((singleDay) => {
+  //   return singleDay.name === day;
+  // });
+
+  // if (state.days.length === 0 || !foundDay) {
+  //   return [];
+  // }
+
+  // const interviewers = foundDay.interviewers;
+
+  // const result = interviewers.map((id) => {
+  //   return state.interviewers[id];
+  // });
+
+  // return result;
 }
 
 export function getInterview(state, interview) {
@@ -61,4 +77,13 @@ export function getInterview(state, interview) {
   }
 
   return interviewTransformed;
+
+  // if (!interview) return null;
+
+  // const selectedInterview = {
+  //   student: interview.student,
+  //   interviewer: state.interviewers[interview.interviewer],
+  // };
+
+  // return selectedInterview;
 }

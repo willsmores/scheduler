@@ -26,29 +26,85 @@ export default function Application(props) {
       axios.get("/api/interviewers"),
     ]).then((all) => {
       // console.log(all[2].data);
-      setState((prev) => ({ ...prev, days: all[0].data }));
-      setState((prev) => ({ ...prev, appointments: all[1].data }));
-      setState((prev) => ({ ...prev, interviewers: all[2].data }));
+      setState((prev) => ({
+        ...prev,
+        days: all[0].data,
+        appointments: all[1].data,
+        interviewers: all[2].data,
+      }));
     });
   }, []);
 
+  // console.log("state days", state.days);
+  // console.log("state app", state.appointments);
+  // console.log("state int", state.interviewers);
+
   const interviewers = getInterviewersForDay(state, state.day);
+  // const appointments = getAppointmentsForDay(state, state.day);
 
-  const appointments = getAppointmentsForDay(state, state.day);
+  // book interview
+  function bookInterview(id, interview) {
+    // console.log("book Interview", "id:", id, "interview", interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
 
-  const schedule = appointments.map((appointment) => {
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then((res) => {
+        // console.log(res);
+        setState({ ...state, appointments });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  // cancel interview
+  function cancelInterview(id, interview) {
+    // console.log("cancel", id);
+
+    const appointment = {
+      interview: interview,
+      ...state.appointments[id],
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios
+      .delete(`/api/appointments/${id}`)
+      .then((res) => {
+        // console.log(res);
+        setState({ ...state, appointments });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const dailyAppointments = getAppointmentsForDay(state, state.day);
+
+  const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-
-    // console.log("a.interview", appointment.interview);
-    console.log("interview:", interview); // what is wrong here
+    console.log("interview", interview);
+    console.log("appointment", appointment);
 
     return (
       <Appointment
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
-        interview={appointment.interview} // what is wrong here - breaks when 'interview' is used
+        interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
