@@ -17,7 +17,6 @@ export default function useApplicationData() {
       axios.get("/api/appointments"),
       axios.get("/api/interviewers"),
     ]).then((all) => {
-      // console.log(all[2].data);
       setState((prev) => ({
         ...prev,
         days: all[0].data,
@@ -27,15 +26,31 @@ export default function useApplicationData() {
     });
   }, []);
 
-  // console.log("state days", state.days);
-  // console.log("state app", state.appointments);
-  // console.log("state int", state.interviewers);
+  // update appointment spots
+  const updateSpots = function (state, appointments) {
+    const newDays = [...state.days];
 
-  // const appointments = getAppointmentsForDay(state, state.day);
+    // get the day and index
+    const index = newDays.findIndex((day) => day.name === state.day);
+    const dayObj = newDays.find((day) => day.name === state.day);
+
+    // count the null appointments
+    let spots = 0;
+    for (let id of dayObj.appointments) {
+      const appointment = appointments[id];
+      if (!appointment.interview) {
+        spots++;
+      }
+    }
+
+    const day = { ...dayObj, spots };
+    newDays[index] = day;
+
+    return newDays;
+  };
 
   // book interview
   function bookInterview(id, interview) {
-    console.log("book Interview", "id:", id, "interview", interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -48,8 +63,8 @@ export default function useApplicationData() {
     return axios
       .put(`/api/appointments/${id}`, { interview })
       .then((res) => {
-        // console.log(res);
-        setState({ ...state, appointments });
+        const days = updateSpots(state, appointments);
+        setState((prev) => ({ ...prev, appointments, days }));
       })
       .catch((err) => {
         console.log(err);
@@ -57,12 +72,10 @@ export default function useApplicationData() {
   }
 
   // cancel interview
-  function cancelInterview(id, interview) {
-    // console.log("cancel", id);
-
+  function cancelInterview(id) {
     const appointment = {
-      interview: interview,
       ...state.appointments[id],
+      interview: null,
     };
     const appointments = {
       ...state.appointments,
@@ -72,8 +85,8 @@ export default function useApplicationData() {
     return axios
       .delete(`/api/appointments/${id}`)
       .then((res) => {
-        // console.log(res);
-        setState({ ...state, appointments });
+        const days = updateSpots(state, appointments);
+        setState((prev) => ({ ...prev, appointments, days }));
       })
       .catch((err) => {
         console.log(err);

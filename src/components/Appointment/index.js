@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../Appointment/styles.scss";
 
 import Header from "./Header";
@@ -43,12 +43,9 @@ export default function Appointment(props) {
   }
 
   function deleteApp(id) {
-    // console.log("app to delete", id);
-    const interview = null;
-
     transition("DELETING", true);
     props
-      .cancelInterview(id, interview)
+      .cancelInterview(id)
       .then(() => transition("EMPTY"))
       .catch(() => transition(ERROR_DELETE, true));
   }
