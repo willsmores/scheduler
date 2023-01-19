@@ -11,9 +11,7 @@ export default function useVisualMode(initial) {
     }
 
     setMode((prev) => newMode);
-    // history.push(newMode);
     setHistory((prev) => [...prev, newMode]);
-    // console.log('history:',history);
     return { mode };
   };
 
@@ -25,6 +23,5 @@ export default function useVisualMode(initial) {
     setMode(history[history.length - 1]);
   };
 
-  // console.log('mode', mode);
   return { mode, transition, back };
 }

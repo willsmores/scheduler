@@ -1,12 +1,6 @@
 import React from "react";
 
 export default function Show(props) {
-  // const interviewerObj = props.interview.interviewer;
-
-  // console.log("interviewer:", interviewerObj);
-  // console.log("props:", props.interviewer);
-  // console.log("props name:", props.interview.interviewer.name);
-
   return (
     <main className="appointment__card appointment__card--show">
       <section className="appointment__card-left">

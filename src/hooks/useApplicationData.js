@@ -64,9 +64,6 @@ export default function useApplicationData() {
       const days = updateSpots(state, appointments);
       setState((prev) => ({ ...prev, appointments, days }));
     });
-    // .catch((err) => {
-    //   console.log(err);
-    // });
   }
 
   // cancel interview
@@ -84,9 +81,6 @@ export default function useApplicationData() {
       const days = updateSpots(state, appointments);
       setState((prev) => ({ ...prev, appointments, days }));
     });
-    // .catch((err) => {
-    //   console.log(err);
-    // });
   }
 
   return {
