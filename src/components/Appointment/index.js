@@ -34,24 +34,24 @@ export default function Appointment(props) {
       student: name,
       interviewer,
     };
-    transition("SAVING", true);
+    transition(SAVING, true);
 
     props
       .bookInterview(props.id, interview)
-      .then(() => transition("SHOW"))
-      .catch(() => transition(ERROR_SAVE, true));
+      .then(() => transition(SHOW))
+      .catch((error) => transition(ERROR_SAVE, true));
   }
 
   function deleteApp(id) {
-    transition("DELETING", true);
+    transition(DELETING, true);
     props
       .cancelInterview(id)
-      .then(() => transition("EMPTY"))
-      .catch(() => transition(ERROR_DELETE, true));
+      .then(() => transition(EMPTY))
+      .catch((error) => transition(ERROR_DELETE, true));
   }
 
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time={props.time} />
 
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
@@ -90,7 +90,18 @@ export default function Appointment(props) {
       )}
       {mode === SAVING && <Status message={"Saving"} />}
       {mode === DELETING && <Status message={"Deleting"} />}
-      {mode === ERROR_DELETE && <Error />}
+      {mode === ERROR_SAVE && (
+        <Error
+          message={"Error Saving Appointment"}
+          onClose={() => transition(EMPTY)}
+        />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error
+          message={"Error Deleting Appointment"}
+          onClose={() => transition(SHOW)}
+        />
+      )}
     </article>
   );
 }

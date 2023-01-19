@@ -60,15 +60,13 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
-    return axios
-      .put(`/api/appointments/${id}`, { interview })
-      .then((res) => {
-        const days = updateSpots(state, appointments);
-        setState((prev) => ({ ...prev, appointments, days }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return axios.put(`/api/appointments/${id}`, { interview }).then((res) => {
+      const days = updateSpots(state, appointments);
+      setState((prev) => ({ ...prev, appointments, days }));
+    });
+    // .catch((err) => {
+    //   console.log(err);
+    // });
   }
 
   // cancel interview
@@ -82,15 +80,13 @@ export default function useApplicationData() {
       [id]: appointment,
     };
 
-    return axios
-      .delete(`/api/appointments/${id}`)
-      .then((res) => {
-        const days = updateSpots(state, appointments);
-        setState((prev) => ({ ...prev, appointments, days }));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return axios.delete(`/api/appointments/${id}`).then((res) => {
+      const days = updateSpots(state, appointments);
+      setState((prev) => ({ ...prev, appointments, days }));
+    });
+    // .catch((err) => {
+    //   console.log(err);
+    // });
   }
 
   return {
