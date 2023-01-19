@@ -120,7 +120,7 @@ describe("Application", () => {
     axios.put.mockRejectedValueOnce();
 
     // 1. Render the Application.
-    const { container, debug } = render(<Application />);
+    const { container } = render(<Application />);
     // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
     // 3. Click the "Edit" button on the first booked appointment.
@@ -145,9 +145,10 @@ describe("Application", () => {
 
   it("shows the delete error when failing to delete an existing appointment", async () => {
     axios.put.mockRejectedValueOnce();
+    axios.delete.mockRejectedValueOnce();
 
     // 1. Render the Application.
-    const { container, debug } = render(<Application />);
+    const { container } = render(<Application />);
     // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
     // 3. Click the "Edit" button on the first booked appointment.
@@ -168,6 +169,6 @@ describe("Application", () => {
     await waitForElement(() =>
       getByText(appointment, "Error Deleting Appointment")
     );
-    console.log(prettyDOM(appointment));
+    // console.log(prettyDOM(appointment));
   });
 });
