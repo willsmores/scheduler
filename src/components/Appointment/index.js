@@ -56,7 +56,6 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           id={props.id}
-          // onDelete={deleteApp}
           onDelete={() => transition(CONFIRM)}
           onEdit={() => transition(EDIT)}
         />
@@ -64,14 +63,14 @@ export default function Appointment(props) {
       {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
-          onCancel={() => back()}
+          onCancel={() => transition(EMPTY)}
           onSave={save}
         />
       )}
       {mode === EDIT && (
         <Form
           interviewers={props.interviewers}
-          onCancel={() => back()}
+          onCancel={() => transition(SHOW)}
           onSave={save}
           student={props.interview.student}
           interviewer={props.interview.interviewer.id}
@@ -89,7 +88,13 @@ export default function Appointment(props) {
       {mode === ERROR_SAVE && (
         <Error
           message={"Error Saving Appointment"}
-          onClose={() => transition(EMPTY)}
+          onClose={() => {
+            if (props.interview) {
+              transition(EDIT);
+            } else {
+              transition(CREATE);
+            }
+          }}
         />
       )}
       {mode === ERROR_DELETE && (
