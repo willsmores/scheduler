@@ -45,7 +45,6 @@ describe("Application", () => {
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
     fireEvent.click(getByText(appointment, "Save"));
-    // console.log(prettyDOM(appointment));
 
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
@@ -54,7 +53,7 @@ describe("Application", () => {
     const day = getAllByTestId(container, "day").find((day) =>
       queryByText(day, "Monday")
     );
-    // console.log(prettyDOM(day));
+
     expect(getByText(day, /no spots remaining/i)).toBeInTheDocument();
   });
 
@@ -97,7 +96,6 @@ describe("Application", () => {
     // 3. Click the "Edit" button on the first booked appointment.
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[1];
-    // console.log(prettyDOM(appointment));
     fireEvent.click(getByAltText(appointment, "Edit"));
     // 5. Change the text in the form to "Lydia Miller-Jones".
     fireEvent.change(getByPlaceholderText(appointment, "Enter Student Name"), {
@@ -126,7 +124,6 @@ describe("Application", () => {
     // 3. Click the "Edit" button on the first booked appointment.
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[1];
-    // console.log(prettyDOM(appointment));
     fireEvent.click(getByAltText(appointment, "Edit"));
     // 5. Change the text in the form to "Lydia Miller-Jones".
     fireEvent.change(getByPlaceholderText(appointment, "Enter Student Name"), {
@@ -140,7 +137,12 @@ describe("Application", () => {
     await waitForElement(() =>
       getByText(appointment, "Error Saving Appointment")
     );
-    // console.log(prettyDOM(appointment));
+    // 9. Click the close button
+    fireEvent.click(getByAltText(appointment, "Close"));
+    // 10. Check the unedited name is in the document
+    expect(
+      queryByText(appointment, "Lydia Miller-Jones")
+    ).not.toBeInTheDocument();
   });
 
   it("shows the delete error when failing to delete an existing appointment", async () => {
@@ -154,13 +156,11 @@ describe("Application", () => {
     // 3. Click the "Edit" button on the first booked appointment.
     const appointments = getAllByTestId(container, "appointment");
     const appointment = appointments[1];
-    // console.log(prettyDOM(appointment));
     fireEvent.click(getByAltText(appointment, "Delete"));
     // 4. Check that the element with the text "Are you sure you would like to delete?" is displayed.
     expect(
       getByText(appointment, "Are you sure you would like to delete?")
     ).toBeInTheDocument();
-
     // 5. Click the "Confirm" button.
     fireEvent.click(getByText(appointment, "Confirm"));
     // 6. Check that the element with the text "Deleting" is displayed.
@@ -169,6 +169,9 @@ describe("Application", () => {
     await waitForElement(() =>
       getByText(appointment, "Error Deleting Appointment")
     );
-    // console.log(prettyDOM(appointment));
+    // 9. Click the "Close button"
+    fireEvent.click(getByAltText(appointment, "Close"));
+    // 10. Check the name is still in the document
+    expect(getByText(container, "Archie Cohen")).toBeInTheDocument();
   });
 });
