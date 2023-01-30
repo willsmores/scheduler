@@ -6,7 +6,6 @@ export default function useVisualMode(initial) {
 
   const transition = (newMode, replace = false) => {
     if (replace) {
-      // replace history.pop
       history.pop();
       setMode(history[history.length - 1]);
     }
@@ -18,7 +17,6 @@ export default function useVisualMode(initial) {
 
   const back = () => {
     if (history.length > 1) {
-      // replace history.pop
       history.pop();
     }
 
