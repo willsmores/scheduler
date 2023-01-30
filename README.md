@@ -22,7 +22,7 @@ npm test
 npm run storybook
 ```
 
-## Run Backend / API Data
+## Runing Backend / API Data
 
 https://github.com/willsmores/scheduler-api
 
